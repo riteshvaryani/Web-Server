@@ -8,23 +8,23 @@ var fs= require('fs');
 var mimeTypes = {
 	"html" : "text/html",
 	"jpeg" : "image/jpeg",
-	"jpg" : "image/jpg",
+	"jpg" : "image/jpeg",
 	"png" : "image/png",
 	"js" : "text/javascript",
 	"css" : "text/css"
 };
 
 //create Server
-http.createServer(function () {
+http.createServer(function (req,res) {
   var uri=url.parse(req.url).pathname;
-  var filename = path.join(process.cwd(),unescape(uri));
+  var fileName = path.join(process.cwd(),unescape(uri));
 console.log('Loading '+uri);
 var stats;
 try{
-stats=fs.lstatSync(filename);
+stats=fs.lstatSync(fileName);
 }
 catch(e){
-res.writeHead(404, {'Content-Type':'text/plain'};
+res.writeHead(404, {'Content-type':'text/plain'});
 	res.write('404 Not Found \n');
 	res.end();
 	return;
@@ -33,7 +33,7 @@ res.writeHead(404, {'Content-Type':'text/plain'};
 if(stats.isFile())
 {
 	var mimeType = mimeTypes[path.extname(fileName).split(".").reverse()[0]];
-	res.writeHead(200,{'Xontent-type' : mimeType});
+	res.writeHead(200,{'Content-type' : mimeType});
 
 	var fileStream=fs.createReadStream(fileName);
 	fileStream.pipe(res);
